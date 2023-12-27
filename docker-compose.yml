@@ -1,0 +1,22 @@
+services:
+  lambda:
+    build:
+      context: lambda
+    container_name: lambda
+    networks:
+      - lambda-example
+  kong:
+    image: kong:latest
+    container_name: kong
+    ports:
+      - "8000:8000"
+    environment:
+      KONG_DATABASE: off
+      KONG_DECLARATIVE_CONFIG: /usr/local/kong/declarative/kong.yml
+    volumes:
+      - ./kong:/usr/local/kong/declarative
+    networks:
+      - lambda-example
+
+networks:
+  lambda-example:
